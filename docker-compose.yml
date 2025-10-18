@@ -1,4 +1,4 @@
-#
+#http
 # Please consult the `Deployment` section in the docs if you want to deploy
 # this. You *need* to keep this nginx service, even if you have your own,
 # otherwise the static files will not be served correctly! If you do remove
