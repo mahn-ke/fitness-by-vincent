@@ -7,7 +7,7 @@
 
 services:
   web:
-    image: docker.io/wger/server:latest
+    image: ghcr.io/vimaster/server:2.4-dev
     depends_on:
       db:
         condition: service_healthy
