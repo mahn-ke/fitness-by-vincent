@@ -72,7 +72,7 @@ services:
     restart: unless-stopped
 
   db:
-    image: docker.io/postgres:15-alpine
+    image: docker.io/postgres:18-alpine
     environment:
       - POSTGRES_USER=wger
       - POSTGRES_PASSWORD=wger
