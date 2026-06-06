@@ -23,7 +23,8 @@ services:
       - OIDC_WELL_KNOWN_URL=${OAUTH_URL}
       - OIDC_CLIENT_ID=${OAUTH_CLIENT_ID}
       - OIDC_CLIENT_SECRET=${OAUTH_CLIENT_SECRET}
-      - TRUST_X_FORWARDED_PROTO=true
+      - X_FORWARDED_PROTO_HEADER_SET=true
+      - SECURE_PROXY_SSL_HEADER=HTTP_X_FORWARDED_PROTO
       - USE_X_FORWARDED_HOST=true
     volumes:
       - static:/home/wger/static
