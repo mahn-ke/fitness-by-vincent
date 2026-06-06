@@ -18,6 +18,11 @@ services:
     environment:
       - SECRET_KEY=${SECRET_KEY}
       - SIGNING_KEY=${SIGNING_KEY}
+      - OIDC_PROVIDER_ID=oidc
+      - OIDC_PROVIDER_NAME=${OAUTH_NAME}
+      - OIDC_WELL_KNOWN_URL=${OAUTH_URL}
+      - OIDC_CLIENT_ID=${OAUTH_CLIENT_ID}
+      - OIDC_CLIENT_SECRET=${OAUTH_CLIENT_SECRET}
     volumes:
       - static:/home/wger/static
       - media:/home/wger/media
@@ -43,11 +48,6 @@ services:
       - web
     environment:
       - PORT=3000
-      - OIDC_PROVIDER_ID=oidc
-      - OIDC_PROVIDER_NAME=${OAUTH_NAME}
-      - OIDC_WELL_KNOWN_URL=${OAUTH_URL}
-      - OIDC_CLIENT_ID=${OAUTH_CLIENT_ID}
-      - OIDC_CLIENT_SECRET=${OAUTH_CLIENT_SECRET}
     expose:
       - 3000
     logging:
