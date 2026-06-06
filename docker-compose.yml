@@ -43,6 +43,11 @@ services:
       - web
     environment:
       - PORT=3000
+      - OIDC_PROVIDER_ID=oidc
+      - OIDC_PROVIDER_NAME=${OAUTH_NAME}
+      - OIDC_WELL_KNOWN_URL=${OAUTH_URL}
+      - OIDC_CLIENT_ID=${OAUTH_CLIENT_ID}
+      - OIDC_CLIENT_SECRET=${OAUTH_CLIENT_SECRET}
     expose:
       - 3000
     logging:
@@ -51,12 +56,6 @@ services:
         max-size: 5m
         max-file: 5
     restart: unless-stopped
-    environment:
-      - OIDC_PROVIDER_ID=oidc
-      - OIDC_PROVIDER_NAME=${OAUTH_NAME}
-      - OIDC_WELL_KNOWN_URL=${OAUTH_URL}
-      - OIDC_CLIENT_ID=${OAUTH_CLIENT_ID}
-      - OIDC_CLIENT_SECRET=${OAUTH_CLIENT_SECRET}
 
   nginx:
     image: docker.io/nginx:stable
