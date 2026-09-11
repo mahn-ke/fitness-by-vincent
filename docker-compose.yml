@@ -104,7 +104,7 @@ services:
     restart: unless-stopped
 
   cache:
-    image: docker.io/redis
+    image: docker.io/redis:latest@sha256:344e3945a0b431c8ff1eecd58c5573538126bd756f02fc7e218ddf1fc2546366
     expose:
       - 6379
     logging:
@@ -129,7 +129,7 @@ services:
     #mem_limit: 5gb
 
   celery_worker:
-    image: docker.io/wger/server:latest
+    image: docker.io/wger/server:latest@sha256:51745250421dfad8c82a659ccf19196d482eeb300c8aad71554eacc6cd138741
     command: /start-worker
     env_file:
       - ./config/prod.env
@@ -154,7 +154,7 @@ services:
       start_period: 30s
 
   celery_beat:
-    image: docker.io/wger/server:latest
+    image: docker.io/wger/server:latest@sha256:51745250421dfad8c82a659ccf19196d482eeb300c8aad71554eacc6cd138741
     command: /start-beat
     logging:
       driver: json-file
