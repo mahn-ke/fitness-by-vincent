@@ -129,7 +129,7 @@ services:
     #mem_limit: 5gb
 
   celery_worker:
-    image: docker.io/wger/server:latest@sha256:51745250421dfad8c82a659ccf19196d482eeb300c8aad71554eacc6cd138741
+    image: docker.io/wger/server:latest@sha256:b86559e619915d007c4e0dbaa7490d79859f8d3b5eff48301af4dc738e6a8776
     command: /start-worker
     env_file:
       - ./config/prod.env
@@ -154,7 +154,7 @@ services:
       start_period: 30s
 
   celery_beat:
-    image: docker.io/wger/server:latest@sha256:51745250421dfad8c82a659ccf19196d482eeb300c8aad71554eacc6cd138741
+    image: docker.io/wger/server:latest@sha256:b86559e619915d007c4e0dbaa7490d79859f8d3b5eff48301af4dc738e6a8776
     command: /start-beat
     logging:
       driver: json-file
