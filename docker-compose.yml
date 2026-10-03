@@ -111,6 +111,8 @@ services:
 
   nginx:
     image: docker.io/nginx:stable
+    labels:
+      com.mahn-ke.config-revision: powersync-proxy-v1
     depends_on:
       - web
       - app
