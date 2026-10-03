@@ -18,6 +18,8 @@ services:
     environment:
       - SECRET_KEY=${SECRET_KEY}
       - SIGNING_KEY=${SIGNING_KEY}
+      - JWT_PRIVATE_KEY=${JWT_PRIVATE_KEY:?JWT_PRIVATE_KEY is required}
+      - JWT_PUBLIC_KEY=${JWT_PUBLIC_KEY:?JWT_PUBLIC_KEY is required}
       - OIDC_PROVIDER_ID=oidc
       - OIDC_PROVIDER_NAME=${OAUTH_NAME}
       - OIDC_WELL_KNOWN_URL=${OAUTH_URL}
@@ -136,6 +138,8 @@ services:
     environment:
       - SECRET_KEY=${SECRET_KEY}
       - SIGNING_KEY=${SIGNING_KEY}
+      - JWT_PRIVATE_KEY=${JWT_PRIVATE_KEY:?JWT_PRIVATE_KEY is required}
+      - JWT_PUBLIC_KEY=${JWT_PUBLIC_KEY:?JWT_PUBLIC_KEY is required}
     volumes:
       - media:/home/wger/media
     logging:
@@ -168,6 +172,8 @@ services:
     environment:
       - SECRET_KEY=${SECRET_KEY}
       - SIGNING_KEY=${SIGNING_KEY}
+      - JWT_PRIVATE_KEY=${JWT_PRIVATE_KEY:?JWT_PRIVATE_KEY is required}
+      - JWT_PUBLIC_KEY=${JWT_PUBLIC_KEY:?JWT_PUBLIC_KEY is required}
     depends_on:
       celery_worker:
         condition: service_healthy
