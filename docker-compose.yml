@@ -57,6 +57,8 @@ services:
     environment:
       - SECRET_KEY=${SECRET_KEY}
       - SIGNING_KEY=${SIGNING_KEY}
+      - JWT_PRIVATE_KEY=${JWT_PRIVATE_KEY:?JWT_PRIVATE_KEY is required}
+      - JWT_PUBLIC_KEY=${JWT_PUBLIC_KEY:?JWT_PUBLIC_KEY is required}
       - PS_STORAGE_PG_URI=postgres://powersync_storage:${POWERSYNC_STORAGE_PASSWORD:?POWERSYNC_STORAGE_PASSWORD is required}@db:5432/wger
     depends_on:
       web:
@@ -133,6 +135,7 @@ services:
 
   db:
     image: docker.io/postgres:15-alpine
+    command: ["postgres", "-c", "wal_level=logical"]
     environment:
       - POSTGRES_USER=wger
       - POSTGRES_PASSWORD=wger
