@@ -7,7 +7,7 @@
 
 services:
   web:
-    image: ghcr.io/vimaster/server:2.4-dev
+    image: docker.io/wger/server:2.7.0@sha256:1c5789b93bfe5eed0b7287255782d9177027b255de2b22b59f511a693a48db04
     depends_on:
       db:
         condition: service_healthy
@@ -129,7 +129,7 @@ services:
     #mem_limit: 5gb
 
   celery_worker:
-    image: docker.io/wger/server:latest@sha256:b86559e619915d007c4e0dbaa7490d79859f8d3b5eff48301af4dc738e6a8776
+    image: docker.io/wger/server:2.7.0@sha256:1c5789b93bfe5eed0b7287255782d9177027b255de2b22b59f511a693a48db04
     command: /start-worker
     env_file:
       - ./config/prod.env
@@ -154,7 +154,7 @@ services:
       start_period: 30s
 
   celery_beat:
-    image: docker.io/wger/server:latest@sha256:b86559e619915d007c4e0dbaa7490d79859f8d3b5eff48301af4dc738e6a8776
+    image: docker.io/wger/server:2.7.0@sha256:1c5789b93bfe5eed0b7287255782d9177027b255de2b22b59f511a693a48db04
     command: /start-beat
     logging:
       driver: json-file
