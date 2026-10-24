@@ -66,7 +66,7 @@ services:
     restart: "no"
 
   powersync:
-    image: docker.io/journeyapps/powersync-service:latest
+    image: ghcr.io/mahn-ke/fitness-by-vincent/powersync:latest
     command: ["start", "-r", "unified"]
     env_file:
       - ./config/prod.env
@@ -76,8 +76,6 @@ services:
       - PS_STORAGE_PG_URI=postgres://powersync_storage:${POWERSYNC_STORAGE_PASSWORD:?POWERSYNC_STORAGE_PASSWORD is required}@db:5432/wger
       - PS_PORT=8080
       - PS_JWKS_URL=http://web:8000/api/v2/powersync-keys
-    volumes:
-      - ./config-powersync:/config:ro
     expose:
       - 8080
       - 9090
@@ -112,7 +110,7 @@ services:
     restart: unless-stopped
 
   nginx:
-    image: docker.io/nginx:stable
+    image: ghcr.io/mahn-ke/fitness-by-vincent/nginx:latest
     labels:
       com.mahn-ke.config-revision: powersync-proxy-v1
     depends_on:
@@ -120,7 +118,6 @@ services:
       - app
       - powersync
     volumes:
-      - ./config/nginx.conf:/etc/nginx/conf.d/default.conf
       - static:/wger/static:ro
       - media:/wger/media:ro
     ports:
@@ -159,7 +156,7 @@ services:
     restart: unless-stopped
 
   cache:
-    image: docker.io/redis:latest@sha256:97ec88159e6d7cfb5ddef9015386087d58a912de80112f06ebdfa78fa5989901
+    image: ghcr.io/mahn-ke/fitness-by-vincent/redis:latest
     expose:
       - 6379
     logging:
@@ -168,7 +165,6 @@ services:
         max-size: 5m
         max-file: 5
     volumes:
-      - ./config/redis.conf:/usr/local/etc/redis/redis.conf
       - redis-data:/data
     command: [ "redis-server", "/usr/local/etc/redis/redis.conf"]
     healthcheck:
