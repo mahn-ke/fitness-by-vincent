@@ -31,6 +31,9 @@ services:
       - X_FORWARDED_PROTO_HEADER_SET=true
       - SECURE_PROXY_SSL_HEADER=HTTP_X_FORWARDED_PROTO
       - USE_X_FORWARDED_HOST=true
+      # Signing key of wger's OAuth2/OIDC provider (Terraform: repos/infrastructure, module wger_oauth).
+      # Without it wger keeps the provider off and /identity/o/authorize returns 404.
+      - IDP_OIDC_PRIVATE_KEY=${IDP_OIDC_PRIVATE_KEY:-}
     volumes:
       - static:/home/wger/static
       - media:/home/wger/media
@@ -60,6 +63,48 @@ services:
       - JWT_PRIVATE_KEY=${JWT_PRIVATE_KEY:?JWT_PRIVATE_KEY is required}
       - JWT_PUBLIC_KEY=${JWT_PUBLIC_KEY:?JWT_PUBLIC_KEY is required}
       - PS_STORAGE_PG_URI=postgres://powersync_storage:${POWERSYNC_STORAGE_PASSWORD:?POWERSYNC_STORAGE_PASSWORD is required}@db:5432/wger
+    depends_on:
+      web:
+        condition: service_healthy
+    restart: "no"
+
+  # Registers the OAuth clients of wger's OIDC provider from WGER_OIDC_CLIENTS (Terraform:
+  # repos/infrastructure, module wger_oauth). Idempotent: creates or updates each client on every deploy.
+  oidc_setup:
+    image: docker.io/wger/server:2.7.0@sha256:1c5789b93bfe5eed0b7287255782d9177027b255de2b22b59f511a693a48db04
+    command:
+      - ./manage.py
+      - shell
+      - -c
+      - |
+        import json, os
+        from allauth.idp.oidc.models import Client
+        clients = json.loads(os.environ.get("WGER_OIDC_CLIENTS") or "[]")
+        if not clients:
+            print("WGER_OIDC_CLIENTS not set, no OIDC clients registered")
+        for c in clients:
+            client, created = Client.objects.get_or_create(id=c["id"], defaults={"name": c["name"]})
+            client.name = c["name"]
+            client.type = Client.Type.CONFIDENTIAL
+            if created or not client.check_secret(c["secret"]):
+                client.set_secret(c["secret"])
+            client.set_scopes(c["scopes"])
+            client.set_default_scopes(c["scopes"])
+            client.set_grant_types([Client.GrantType.AUTHORIZATION_CODE, Client.GrantType.REFRESH_TOKEN])
+            client.set_response_types(["code"])
+            client.set_redirect_uris(c["redirect_uris"])
+            client.allow_uri_wildcards = False
+            client.full_clean()
+            client.save()
+            print(("created" if created else "updated"), "OIDC client", client.id)
+    env_file:
+      - ./config/prod.env
+    environment:
+      - SECRET_KEY=${SECRET_KEY}
+      - SIGNING_KEY=${SIGNING_KEY}
+      - JWT_PRIVATE_KEY=${JWT_PRIVATE_KEY:?JWT_PRIVATE_KEY is required}
+      - JWT_PUBLIC_KEY=${JWT_PUBLIC_KEY:?JWT_PUBLIC_KEY is required}
+      - WGER_OIDC_CLIENTS=${WGER_OIDC_CLIENTS:-}
     depends_on:
       web:
         condition: service_healthy
