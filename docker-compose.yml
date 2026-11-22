@@ -131,6 +131,10 @@ services:
         condition: service_healthy
       powersync_setup:
         condition: service_completed_successfully
+      # `docker compose up --wait` fails on exited one-shot containers unless a service waits for
+      # their successful completion; this also surfaces a failed client registration in the deploy.
+      oidc_setup:
+        condition: service_completed_successfully
     logging:
       driver: json-file
       options:
