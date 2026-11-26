@@ -149,6 +149,10 @@ services:
       - web
     environment:
       - PORT=3000
+      - DATA_DIR=/data
+    volumes:
+      # Equipment weights of the mobile app
+      - app-data:/data
     expose:
       - 3000
     logging:
@@ -161,7 +165,7 @@ services:
   nginx:
     image: ghcr.io/mahn-ke/fitness-by-vincent/nginx:latest
     labels:
-      com.mahn-ke.config-revision: powersync-proxy-v1
+      com.mahn-ke.config-revision: equipment-v1
     depends_on:
       - web
       - app
@@ -277,6 +281,7 @@ services:
         condition: service_healthy
 
 volumes:
+  app-data:
   postgres-data:
   celery-beat:
   redis-data:
