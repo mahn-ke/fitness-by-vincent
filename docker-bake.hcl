@@ -1,5 +1,5 @@
 group "default" {
-  targets = ["nginx", "redis", "powersync"]
+  targets = ["nginx", "redis", "powersync", "app"]
 }
 
 target "_common" {
@@ -27,4 +27,10 @@ target "powersync" {
   inherits = ["_common"]
   context = "config-powersync"
   tags = ["ghcr.io/mahn-ke/fitness-by-vincent/powersync:latest"]
+}
+
+target "app" {
+  inherits = ["_common"]
+  context = "app"
+  tags = ["ghcr.io/mahn-ke/fitness-by-vincent/app:latest"]
 }

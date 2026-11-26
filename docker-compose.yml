@@ -143,8 +143,9 @@ services:
     restart: unless-stopped
 
   app:
-    build:
-      context: ./app
+    # Published by the deploy workflow from docker-bake.hcl; a local build would
+    # never be rebuilt, the deploy runs compose without --build
+    image: ghcr.io/mahn-ke/fitness-by-vincent/app:latest
     depends_on:
       - web
     environment:

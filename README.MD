@@ -5,7 +5,7 @@ Hosts the container serving [fitness.by.vincent.mahn.ke](https://fitness.by.vinc
 ## Container configuration
 
 The shared deployment workflow builds `docker-bake.hcl` and publishes NGINX,
-Redis, and PowerSync images under `ghcr.io/mahn-ke/fitness-by-vincent/`.
+Redis, PowerSync, and Node app images under `ghcr.io/mahn-ke/fitness-by-vincent/`.
 These images contain `config/nginx.conf`, `config/redis.conf`, and the
 `config-powersync` YAML files respectively, rather than mounting the runner
 checkout at runtime. The build context excludes `config/prod.env`.
