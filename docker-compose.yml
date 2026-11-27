@@ -34,9 +34,12 @@ services:
       # Signing key of wger's OAuth2/OIDC provider (Terraform: repos/infrastructure, module wger_oauth).
       # Without it wger keeps the provider off and /identity/o/authorize returns 404.
       - IDP_OIDC_PRIVATE_KEY=${IDP_OIDC_PRIVATE_KEY:-}
+      # Extends settings.main, see config/settings_fitness.py
+      - DJANGO_SETTINGS_MODULE=settings.fitness
     volumes:
       - static:/home/wger/static
       - media:/home/wger/media
+      - ./config/settings_fitness.py:/home/wger/src/settings/fitness.py:ro
     expose:
       - 8000
     logging:
